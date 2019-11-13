@@ -8,6 +8,7 @@ PULL_ID=$(jq -r ".number" "$GITHUB_EVENT_PATH")
 echo "## Initializing git repo..."
 git init
 echo "### Adding git remote..."
+git remote rename origin github
 git remote add origin https://x-access-token:$GITHUB_TOKEN@github.com/$REPO_FULLNAME.git
 echo "### Getting branch"
 BRANCH="PR-$PULL_ID"
