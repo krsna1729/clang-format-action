@@ -3,15 +3,16 @@
 set -eu
 
 REPO_FULLNAME=$(jq -r ".repository.full_name" "$GITHUB_EVENT_PATH")
+PULL_ID=$(jq -r ".number" "$GITHUB_EVENT_PATH")
 
 echo "## Initializing git repo..."
 git init
 echo "### Adding git remote..."
 git remote add origin https://x-access-token:$GITHUB_TOKEN@github.com/$REPO_FULLNAME.git
 echo "### Getting branch"
-BRANCH=${GITHUB_REF#*refs/heads/}
+BRANCH="PR-$PULL_ID"
 echo "### git fetch $BRANCH ..."
-git fetch origin $BRANCH
+git fetch origin pull/$PULL_ID/head:$BRANCH
 echo "### Branch: $BRANCH (ref: $GITHUB_REF )"
 git checkout $BRANCH
 
